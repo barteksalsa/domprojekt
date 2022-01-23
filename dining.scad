@@ -19,13 +19,13 @@ color("white")
   // prawa
   translate([w,0,0])
     difference() {
-     cube([1,d,h]);
-     translate([-1,87,82]) cube([3,145,145]);
+     cube([20,d,h]);
+     translate([-1,87,85.5]) cube([30,145,145]); // okno
     };
   // parapet
-  translate([w-4,d-131,82])
-    rotate(a=[0,0,-90])
-      cube([151,4,1]);
+  //translate([w-4,d-131,85])
+  //  rotate(a=[0,0,-90])
+  //    cube([151,4,1]);
   // tylna
   translate([w-108,0,0])
     cube([108,1,h]);
@@ -74,10 +74,23 @@ color("DimGray") {
 color("#404040") {
     translate([LX+143,LY+4,wys_blatu+4]) {
       cube([80-4-20,50-4,1.5]);
+    }
+  }
 }
+//zlew();
+
+// zlew narozny
+module zlew_narozny() {
+      color("DimGray") { 
+          cube([80,50,1]);
+      }
+      color("#404040") {
+          translate([80-45,-(80-50),0]) rotate([0,0,00]) cube([45,78,2]);
+          translate([65,50,5]) rotate(a=[30,0,0]) cube([5,5,30],center=true);
+      }
+
 }
-}
-zlew();
+
  
 module szafka(leftoffset,width) {
     translate([leftoffset,d-60,0])
@@ -91,6 +104,8 @@ color("green") {
     umiesc_z_przodu([80+60,20,140]) szafka_wiszaca(80);
     umiesc_z_przodu([80+60+80,20,140]) szafka_wiszaca(60);
 }
+    umiesc_z_przodu([80+60+60,00,85])  zlew_narozny(); 
+
 
 module szafka_wiszaca(w) {
     cube([w,40,80]);
@@ -124,20 +139,40 @@ module plyta_indukcyjna() {
     }
 }
 
+// plyta
+color("#400040") umiesc_z_przodu([80+60,3,wys_blatu+4]) plyta_indukcyjna();
+
+
+module blatowyspa() {
+  dlugosc=280;
+  szerokosc=100;
+  translate([0,0,75]) translate([0,-dlugosc+60,0]) cube([szerokosc,dlugosc,1]);
+}
+
+// blatowyspa
+make_blatowyspa = false;
+
+if (make_blatowyspa) {
+    color("#A0A0A0") umiesc_z_boku([60+60+10+60,0,0]) blatowyspa();
+    translate([w-60,10,0]) krzeslo();
+    translate([w-120,10,0]) krzeslo();
+    translate([w-180,10,0]) krzeslo();
+    translate([w-240,10,0]) krzeslo();
+    translate([w-180,10+100+70+70,0]) rotate([0,0,180]) krzeslo();
+    translate([w-120,10+100+70+70,0]) rotate([0,0,180]) krzeslo();
+}
 
 //---- bok
 // blaty
-umiesc_z_boku([60,0,wys_blatu]) blat(70);
-umiesc_z_boku([60+70,0,wys_blatu-4]) blat(40);
-// plyta
-color("#400040") umiesc_z_boku([60,3,wys_blatu+4]) plyta_indukcyjna();
+umiesc_z_boku([60,0,wys_blatu]) blat(90);
 // szafki
+//umiesc_z_boku([0,0,wys_blatu+2]) zlew_narozny();
 color("green") {
-    umiesc_z_boku([60,0,0]) cube([60,60,82]);
-    umiesc_z_boku([60+60,0,0]) cube([10,60,82]);
-    umiesc_z_boku([40,20,140]) szafka_wiszaca(80);
-    umiesc_z_boku([60+60+10,0,0]) cube([40,60,76]);
+    umiesc_z_boku([0,0,0]) cube([90,60,82]);
+    umiesc_z_boku([90,0,0]) cube([60,60,82]);
+    //umiesc_z_boku([40,20,140]) szafka_wiszaca(80);
 }
+
 
 // umiesc
 module umiesc_z_boku(a) {
@@ -208,21 +243,21 @@ module krzeslo() {
 
 module maly_stol() { 
   // blat malego stolu
-  translate([-150-70,70,75]) color("brown", alpha=0.5) cube([150,100,3]);
+  translate([-160-70,70,75]) color("brown", alpha=0.5) cube([160,100,3]);
   // krzesla malego stollu
   translate([0,60+30,0]) rotate(a=[0,0,90]) krzeslo(); // szczyt
   translate([-70-60-20,0,0]) rotate(a=[0,0,0]) krzeslo();
   translate([-70-60-60-20,0,0]) rotate(a=[0,0,0]) krzeslo();
   translate([-70-20,70+100+70,0]) rotate(a=[0,0,180]) krzeslo();
   translate([-70-60-20,70+100+70,0]) rotate(a=[0,0,180]) krzeslo();
-  translate([-70-60-60-100,100+70-20,0]) rotate(a=[0,0,-90]) krzeslo(); // dol
+  translate([-10-70-60-60-100,100+70-20,0]) rotate(a=[0,0,-90]) krzeslo(); // dol
 }
 
-//translate([120+50,-70,0]) rotate(a=[0,0,-90])  maly_stol();
-translate([450,0,0]) rotate(a=[0,0,0])  maly_stol();
-
-
-translate([w,60,0]) rotate([0,0,180]) szafa_tyl();
+make_malystol = true;
+if (make_malystol) {
+translate([120+50,-70,0]) rotate(a=[0,0,-90])  maly_stol();
+//translate([450,0,0]) rotate(a=[0,0,0])  maly_stol();
+}
 
 // szafa tyl
 module szafa_tyl() {
@@ -232,12 +267,10 @@ module szafa_tyl() {
     color("grey") translate([sz/2+5,-1,80]) cube([1,1,30]);
 }
 
+translate([w,60,0]) rotate([0,0,180]) szafa_tyl();
+
 
 module przyklej(w) { translate([w.x,w.y,w.z]) children(); }
-
-module schodek() { 
-    color("#705030") cube([90,30,4]);
-}
 
 
 // kalkulacje schody
@@ -245,7 +278,18 @@ htotal = 300;
 num = 17;
 h1 = 300/(num);
 space = 336;
-step_dist = space/(num-1);
+step_depth = 30;
+//step_dist_tmp = space/(num-1);
+//step_dist = step_dist_tmp - (step_depth - step_dist_tmp)/(num-1);
+
+// shorter step_dist to accomodate for steps longer than 
+// the inter-step distance
+step_dist = (-step_depth*num + num*space + step_depth)/(num-1)/(num-1);
+
+module schodek() { 
+    color("#705030") cube([90,step_depth,4]);
+}
+
 
 module schody(n) {
     h=h1;
@@ -263,3 +307,5 @@ translate([0,0,300]) cube([90,220,4]);
 translate([0,220+space-100,100]) color("#202020",alpha=0.001) cube([90,100,1]);
 translate([0,220+space-100,300]) color("grey",alpha=1) cube([90,100,4]);
 translate([0,220+space,0]) color("#202020",alpha=0.001) cube([90,1,300]);
+
+
