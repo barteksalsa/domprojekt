@@ -5,7 +5,7 @@ w=505;
 d=367;
 
 //sciany
-color("white")
+color("beige")
  {
   //podloga
   translate([0,0,-1])
@@ -14,7 +14,7 @@ color("white")
   translate([-1,0,0])
     cube([1,d,h]);
   // tylna
-  translate([220,d+1,0])
+  translate([220,d,0])
     cube([285,1,h]);
   // prawa
   translate([w,0,0])
@@ -38,10 +38,10 @@ color("white")
  
  // L: ciag szafek na tylnej scianie
  k=100;
- s=120;  
+ s=125;  
  LX=k+s; // poczatek szafek z tylu
  LY=d-60;  // poczatek szafek z tylu
- SZ_X=w-LX;
+ SZ_X=w-LX; // szerokosc blatu
  
  wys_blatu = 82;
  
@@ -66,14 +66,14 @@ color("green") {
 // zlew
 module zlew() {
 color("DimGray") {
-    translate([LX+140,LY+2,wys_blatu+4]) {
-      cube([80,50,1]);
-      translate([30,50,0]) rotate(a=[30,0,0]) cube([5,5,30],center=true);
+    translate([-30,0,4]) {
+      cube([90,58,1]);
+      translate([30+60/2,53,0]) rotate(a=[30,0,0]) cube([5,5,30],center=true);
     }
 }
 color("#404040") {
-    translate([LX+143,LY+4,wys_blatu+4]) {
-      cube([80-4-20,50-4,1.5]);
+    translate([1,2,4]) {
+      cube([60-1-1,50-4,1.5]);
     }
   }
 }
@@ -101,10 +101,10 @@ module szafka(leftoffset,width) {
 color("green") {
     umiesc_z_przodu([0,20,140]) szafka_wiszaca(80);
     umiesc_z_przodu([80,20,140]) szafka_wiszaca(60);
-    umiesc_z_przodu([80+60,20,140]) szafka_wiszaca(80);
-    umiesc_z_przodu([80+60+80,20,140]) szafka_wiszaca(60);
+    umiesc_z_przodu([80+60,20,140]) szafka_wiszaca(60);
+    umiesc_z_przodu([80+60+60,20,140]) szafka_wiszaca(80);
 }
-    umiesc_z_przodu([80+60+60,00,85])  zlew_narozny(); 
+    //umiesc_z_przodu([80+60+60,00,85])  zlew_narozny(); 
 
 
 module szafka_wiszaca(w) {
@@ -144,13 +144,13 @@ color("#400040") umiesc_z_przodu([80+60,3,wys_blatu+4]) plyta_indukcyjna();
 
 
 module blatowyspa() {
-  dlugosc=280;
-  szerokosc=100;
-  translate([0,0,75]) translate([0,-dlugosc+60,0]) cube([szerokosc,dlugosc,1]);
+  dlugosc=210;
+  szerokosc=90;
+  translate([0,-70,75]) translate([0,-dlugosc+60,0]) cube([szerokosc,dlugosc,1]);
 }
 
 // blatowyspa
-make_blatowyspa = false;
+make_blatowyspa = true;
 
 if (make_blatowyspa) {
     color("#A0A0A0") umiesc_z_boku([60+60+10+60,0,0]) blatowyspa();
@@ -164,14 +164,14 @@ if (make_blatowyspa) {
 
 //---- bok
 // blaty
-umiesc_z_boku([60,0,wys_blatu]) blat(90);
+umiesc_z_boku([60,0,wys_blatu]) blat(120);
 // szafki
-//umiesc_z_boku([0,0,wys_blatu+2]) zlew_narozny();
 color("green") {
-    umiesc_z_boku([0,0,0]) cube([90,60,82]);
-    umiesc_z_boku([90,0,0]) cube([60,60,82]);
+    umiesc_z_boku([0,0,0]) cube([120,60,82]);
+    umiesc_z_boku([120,0,0]) cube([60,60,82]);
     //umiesc_z_boku([40,20,140]) szafka_wiszaca(80);
 }
+umiesc_z_boku([60,0,wys_blatu]) zlew();
 
 
 // umiesc
@@ -189,7 +189,6 @@ module umiesc_z_boku(a) {
 
 // lodowka
 translate([68,220,0]) rotate([0,0,90]) lodowka();
-
 // piekarnik
 translate([68,220+92,0]) rotate([0,0,90]) piekarnik();
 
@@ -253,7 +252,7 @@ module maly_stol() {
   translate([-10-70-60-60-100,100+70-20,0]) rotate(a=[0,0,-90]) krzeslo(); // dol
 }
 
-make_malystol = true;
+make_malystol = false;
 if (make_malystol) {
 translate([120+50,-70,0]) rotate(a=[0,0,-90])  maly_stol();
 //translate([450,0,0]) rotate(a=[0,0,0])  maly_stol();
@@ -266,8 +265,7 @@ module szafa_tyl() {
     color("grey") translate([sz/2-5,-1,80]) cube([1,1,30]);
     color("grey") translate([sz/2+5,-1,80]) cube([1,1,30]);
 }
-
-translate([w,60,0]) rotate([0,0,180]) szafa_tyl();
+// translate([w,60,0]) rotate([0,0,180]) szafa_tyl();
 
 
 module przyklej(w) { translate([w.x,w.y,w.z]) children(); }
