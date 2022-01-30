@@ -2,6 +2,8 @@ d = 269;
 w = 201;
 h = 250;
 
+lewastrona=false;
+
 // podloga
 difference() {
     translate([0,0,-10]) cube([w,d,10]);
@@ -11,7 +13,7 @@ difference() {
 }
 
 // sciana lewa
-//translate([-10,0,0]) cube([10,d,h]);
+if (lewastrona) translate([-10,0,0]) cube([10,d,h]);
 
 // sciana prawa
 translate([w,0,0]) cube([10,d,h]);
@@ -35,8 +37,8 @@ translate([w-30-53,-10,0]) {
 }
 
 // zabudowa
-color("white") translate([w,d-146-50,0]) rotate(a=[0,0,-90]) translate([0,-19,0]) cube([50,19,112]); // prawo od geberitu
-color("white") translate([w,d-146-50,112]) rotate(a=[0,0,-90]) translate([0,-19,0]) cube([50,19,30]);
+color("white",alpha=0.2) translate([w,d-146-50,0]) rotate(a=[0,0,-90]) translate([0,-19,0]) cube([50,19,112]); // prawo od geberitu
+color("white",alpha=0.2) translate([w,d-146-50,112]) rotate(a=[0,0,-90]) translate([0,-19,0]) cube([50,19,30]);
 color("white") translate([w,d-146,0]) rotate(a=[0,0,-90]) translate ([0,-19,112+30]) cube([50+50,19,h-112-30]); // gorna szafka
 
 // wyrownanie sciany
@@ -46,7 +48,7 @@ color("white") translate([148,29+8,0]) translate([0,-7,0]) cube([10,7,h]);
 module kabina(w,d) {
     color(alpha=0.2) cube([w,d,200]);
 }
-translate([0,d-100,0]) kabina(80,100);
+if (lewastrona) translate([0,d-100,0]) kabina(80,100);
 
 // umywalka
 module umywalka(w,h) {
@@ -99,10 +101,6 @@ module kibel(w,h) {
 
 translate([w,d-146,0]) rotate(a=[0,0,-90]) kibel(40,40);
 
-// kaloryfer
-module kaloryfer() {
-    
-}
 
 // gniazdko
 module gniazdko(h) {
@@ -111,3 +109,9 @@ module gniazdko(h) {
     }
 }
 color("white") translate([w,d-118,0]) rotate([0,0,-90]) gniazdko(110);
+
+// recznikowiec
+module recznikowiec() {
+    for (a=[0:15]) { translate([0,0,a*10]) rotate([0,90,0]) cylinder(h=50, r=1.5, center=false); }
+}
+if (lewastrona) color("white") { translate([0,d-170,50]) rotate([0,0,-90]) recznikowiec() ;}
